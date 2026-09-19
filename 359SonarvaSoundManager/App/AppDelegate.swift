@@ -1,9 +1,18 @@
 import UIKit
+import AppsFlyerLib
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        true
+        // AppsFlyer Init
+        AppsFlyerLib.shared().appsFlyerDevKey = "cqTiFvvyhL5a2SNAqqAna3"
+        AppsFlyerLib.shared().appleAppID = "6809480132"
+        AppsFlyerLib.shared().delegate = self
+        AppsFlyerLib.shared().isDebug = false
+        AppsFlyerLib.shared().disableAdvertisingIdentifier = true
+        AppsFlyerLib.shared().start()
+        return true
     }
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

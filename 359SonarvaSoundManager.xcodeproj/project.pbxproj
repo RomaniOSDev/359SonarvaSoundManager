@@ -26,6 +26,21 @@
 		88FAF9863C26412ABF422B08 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714244C45AD845ED94DC4DFB /* WaveformView.swift */; };
 		92A947B4ECF842AF9A322E9B /* VisualCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19379E46F3D4CBABA08F81E /* VisualCollection.swift */; };
 		95E84B61E63F4B92BB4365D6 /* DrumPadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED980596184401A89B7C7B0 /* DrumPadButton.swift */; };
+		A20000000000000000000001 /* AppTrackingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* AppTrackingPrompt.swift */; };
+		A20000000000000000000002 /* AppsFlyerConversionWaiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* AppsFlyerConversionWaiter.swift */; };
+		A20000000000000000000003 /* CalendarGateEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* CalendarGateEvaluator.swift */; };
+		A20000000000000000000004 /* DeferredLaunchCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* DeferredLaunchCanvas.swift */; };
+		A20000000000000000000005 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* Extensions.swift */; };
+		A20000000000000000000006 /* LaunchDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* LaunchDestination.swift */; };
+		A20000000000000000000007 /* LaunchFlowResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* LaunchFlowResolver.swift */; };
+		A20000000000000000000008 /* LaunchFlowSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000008 /* LaunchFlowSecrets.swift */; };
+		A20000000000000000000009 /* LaunchSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000009 /* LaunchSessionStore.swift */; };
+		A2000000000000000000000A /* LaunchStagingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000A /* LaunchStagingState.swift */; };
+		A2000000000000000000000B /* RemoteEntryProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000B /* RemoteEntryProbe.swift */; };
+		A2000000000000000000000C /* RemoteEntryURLComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000C /* RemoteEntryURLComposer.swift */; };
+		A2000000000000000000000D /* RootWindowPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000D /* RootWindowPresenter.swift */; };
+		A2000000000000000000000E /* WebDocumentSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000E /* WebDocumentSurfaceView.swift */; };
+		A60000000000000000000001 /* AppsFlyerLib-Static in Frameworks */ = {isa = PBXBuildFile; productRef = A50000000000000000000001 /* AppsFlyerLib-Static */; };
 		AA677C4A248C434A87BDF133 /* MomentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63AC002C865446798BB9B5C /* MomentsViewModel.swift */; };
 		AB5A9A1E424045056133FADD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560EB9F066F9B51813F4CA4 /* AppDelegate.swift */; };
 		B5CE46931628479F9BB717F2 /* NeonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA398EA71C345439ADD5F68 /* NeonButton.swift */; };
@@ -67,6 +82,20 @@
 		901F4DBDD73F466883A9C051 /* CassetteCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CassetteCard.swift; sourceTree = "<group>"; };
 		92DCEB2F4FFE4CB6BAC70B96 /* MemoEditorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemoEditorView.swift; sourceTree = "<group>"; };
 		9820710CB2F74F528F1A54BD /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10000000000000000000001 /* AppTrackingPrompt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppTrackingPrompt.swift; sourceTree = "<group>"; };
+		A10000000000000000000002 /* AppsFlyerConversionWaiter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppsFlyerConversionWaiter.swift; sourceTree = "<group>"; };
+		A10000000000000000000003 /* CalendarGateEvaluator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CalendarGateEvaluator.swift; sourceTree = "<group>"; };
+		A10000000000000000000004 /* DeferredLaunchCanvas.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeferredLaunchCanvas.swift; sourceTree = "<group>"; };
+		A10000000000000000000005 /* Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		A10000000000000000000006 /* LaunchDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchDestination.swift; sourceTree = "<group>"; };
+		A10000000000000000000007 /* LaunchFlowResolver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchFlowResolver.swift; sourceTree = "<group>"; };
+		A10000000000000000000008 /* LaunchFlowSecrets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchFlowSecrets.swift; sourceTree = "<group>"; };
+		A10000000000000000000009 /* LaunchSessionStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchSessionStore.swift; sourceTree = "<group>"; };
+		A1000000000000000000000A /* LaunchStagingState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchStagingState.swift; sourceTree = "<group>"; };
+		A1000000000000000000000B /* RemoteEntryProbe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RemoteEntryProbe.swift; sourceTree = "<group>"; };
+		A1000000000000000000000C /* RemoteEntryURLComposer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RemoteEntryURLComposer.swift; sourceTree = "<group>"; };
+		A1000000000000000000000D /* RootWindowPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootWindowPresenter.swift; sourceTree = "<group>"; };
+		A1000000000000000000000E /* WebDocumentSurfaceView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebDocumentSurfaceView.swift; sourceTree = "<group>"; };
 		A560EB9F066F9B51813F4CA4 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8F31C90E2B14D6A9C4E7B12 /* Listening.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Listening.swift; sourceTree = "<group>"; };
 		B19379E46F3D4CBABA08F81E /* VisualCollection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VisualCollection.swift; sourceTree = "<group>"; };
@@ -89,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A60000000000000000000001 /* AppsFlyerLib-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +227,27 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		A30000000000000000000001 /* LaunchFlow */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000001 /* AppTrackingPrompt.swift */,
+				A10000000000000000000002 /* AppsFlyerConversionWaiter.swift */,
+				A10000000000000000000003 /* CalendarGateEvaluator.swift */,
+				A10000000000000000000004 /* DeferredLaunchCanvas.swift */,
+				A10000000000000000000005 /* Extensions.swift */,
+				A10000000000000000000006 /* LaunchDestination.swift */,
+				A10000000000000000000007 /* LaunchFlowResolver.swift */,
+				A10000000000000000000008 /* LaunchFlowSecrets.swift */,
+				A10000000000000000000009 /* LaunchSessionStore.swift */,
+				A1000000000000000000000A /* LaunchStagingState.swift */,
+				A1000000000000000000000B /* RemoteEntryProbe.swift */,
+				A1000000000000000000000C /* RemoteEntryURLComposer.swift */,
+				A1000000000000000000000D /* RootWindowPresenter.swift */,
+				A1000000000000000000000E /* WebDocumentSurfaceView.swift */,
+			);
+			path = LaunchFlow;
+			sourceTree = "<group>";
+		};
 		AA02EC8092542F9C0C0DA45F /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +299,7 @@
 			children = (
 				A560EB9F066F9B51813F4CA4 /* AppDelegate.swift */,
 				50FE48BAB47EC69D7B38548D /* SceneDelegate.swift */,
+				A30000000000000000000001 /* LaunchFlow */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -269,6 +321,9 @@
 			dependencies = (
 			);
 			name = 359SonarvaSoundManager;
+			packageProductDependencies = (
+				A50000000000000000000001 /* AppsFlyerLib-Static */,
+			);
 			productName = 359SonarvaSoundManager;
 			productReference = 6DFBB24ABAB6E87829B6AE03 /* 359SonarvaSoundManager.app */;
 			productType = "com.apple.product-type.application";
@@ -291,6 +346,9 @@
 				Base,
 			);
 			mainGroup = 8C3521206337342071114089;
+			packageReferences = (
+				A40000000000000000000001 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */,
+			);
 			productRefGroup = 6FF550B68B8DF74A91BFF952 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -373,6 +431,20 @@
 				B9E42D01F3C25E7B0D5F8C23 /* Listening.swift in Sources */,
 				D1A64F23B5E4709D2F7B0E45 /* BoothHomeView.swift in Sources */,
 				F3C86145D706921F4B9D2067 /* StatsView.swift in Sources */,
+				A20000000000000000000001 /* AppTrackingPrompt.swift in Sources */,
+				A20000000000000000000002 /* AppsFlyerConversionWaiter.swift in Sources */,
+				A20000000000000000000003 /* CalendarGateEvaluator.swift in Sources */,
+				A20000000000000000000004 /* DeferredLaunchCanvas.swift in Sources */,
+				A20000000000000000000005 /* Extensions.swift in Sources */,
+				A20000000000000000000006 /* LaunchDestination.swift in Sources */,
+				A20000000000000000000007 /* LaunchFlowResolver.swift in Sources */,
+				A20000000000000000000008 /* LaunchFlowSecrets.swift in Sources */,
+				A20000000000000000000009 /* LaunchSessionStore.swift in Sources */,
+				A2000000000000000000000A /* LaunchStagingState.swift in Sources */,
+				A2000000000000000000000B /* RemoteEntryProbe.swift in Sources */,
+				A2000000000000000000000C /* RemoteEntryURLComposer.swift in Sources */,
+				A2000000000000000000000D /* RootWindowPresenter.swift in Sources */,
+				A2000000000000000000000E /* WebDocumentSurfaceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +530,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Sonarva Sound Manager";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -465,7 +538,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.stf.s0n4rvs0ndm;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -492,6 +565,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Sonarva Sound Manager";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -499,7 +573,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.stf.s0n4rvs0ndm;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -589,6 +663,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A40000000000000000000001 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework-Static";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A50000000000000000000001 /* AppsFlyerLib-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A40000000000000000000001 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */;
+			productName = "AppsFlyerLib-Static";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B7D9D2E20E68CA3ABB0A2672 /* Project object */;
 }

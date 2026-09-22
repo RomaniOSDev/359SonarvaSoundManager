@@ -47,10 +47,21 @@ enum AppsFlyerConversionWaiter {
 
     /// AF URL (`base/{sub7}?…` or `base/?…`) with composer fallback. Probe decides 404 → native.
     static func resolvedEntryURL() -> URL? {
+        let conversion = UserDefaults.standard.dictionary(forKey: conversionDataKey) as? [String: String] ?? [:]
+        print("[LaunchFlow] AppsFlyer conversion (at URL build):")
+        if conversion.isEmpty {
+            print("  (empty)")
+        } else {
+            print(conversion.sorted(by: { $0.key < $1.key }).map { "  \($0.key) = \($0.value)" }.joined(separator: "\n"))
+        }
+
         let url = AppsFlyerEntryURLBuilder.makeEntryURL()
             ?? RemoteEntryURLComposer().composedURL()
         if let url {
             UserDefaults.standard.set(url.absoluteString, forKey: userDefaultsKey)
+            print("[LaunchFlow] Final entry URL: \(url.absoluteString)")
+        } else {
+            print("[LaunchFlow] Final entry URL: nil (builder + composer failed)")
         }
         return url
     }

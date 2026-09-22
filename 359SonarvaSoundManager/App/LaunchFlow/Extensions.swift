@@ -11,15 +11,17 @@ extension AppDelegate: AppsFlyerLibDelegate {
     func onConversionDataSuccess(_ data: [AnyHashable: Any]) {
         let flat = Self.flattenConversionData(data)
         UserDefaults.standard.set(flat, forKey: AppsFlyerConversionWaiter.conversionDataKey)
+        print("[LaunchFlow] AppsFlyer conversion SUCCESS:")
+        print(flat.sorted(by: { $0.key < $1.key }).map { "  \($0.key) = \($0.value)" }.joined(separator: "\n"))
         // Full entry URL is built later (after ATT) so IDFA is available.
         NotificationCenter.default.post(name: Notification.Name("AppsFlyerDataReceived"), object: nil)
     }
 
     func onConversionDataFail(_ error: Error) {
-        UserDefaults.standard.set(
-            ["error": error.localizedDescription, "af_status": "Organic"],
-            forKey: AppsFlyerConversionWaiter.conversionDataKey
-        )
+        let fallback: [String: String] = ["error": error.localizedDescription, "af_status": "Organic"]
+        UserDefaults.standard.set(fallback, forKey: AppsFlyerConversionWaiter.conversionDataKey)
+        print("[LaunchFlow] AppsFlyer conversion FAIL: \(error.localizedDescription)")
+        print("[LaunchFlow] AppsFlyer conversion fallback: \(fallback)")
         NotificationCenter.default.post(name: Notification.Name("AppsFlyerDataReceived"), object: nil)
     }
 }

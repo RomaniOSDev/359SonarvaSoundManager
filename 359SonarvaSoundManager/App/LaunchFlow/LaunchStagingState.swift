@@ -12,4 +12,12 @@ final class LaunchStagingState: ObservableObject {
 
     @Published var progress: Double = 0
     @Published var statusMessage: String = LaunchStagingState.defaultStatusMessage
+
+    // MARK: - Debug overlay (hold on loading; no native pivot)
+
+    @Published var showDebugPanel = false
+    @Published var debugAttemptLabel = ""
+    @Published var debugConversionDump = ""
+    @Published var debugEntryURL = ""
+    @Published var debugProbeStatus = ""
 }

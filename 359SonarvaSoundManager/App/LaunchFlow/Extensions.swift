@@ -75,7 +75,7 @@ enum AppsFlyerEntryURLBuilder {
         conversion: [String: String]? = nil,
         baseTemplate: String = LaunchFlowSecrets.remoteFlowEntryTemplate
     ) -> URL? {
-        let data = conversion ?? (UserDefaults.standard.dictionary(forKey: AppsFlyerConversionWaiter.conversionDataKey) as? [String: String]) ?? [:]
+        let data = conversion ?? AppsFlyerConversionWaiter.storedConversion()
 
         guard var components = URLComponents(string: baseTemplate) else { return nil }
 

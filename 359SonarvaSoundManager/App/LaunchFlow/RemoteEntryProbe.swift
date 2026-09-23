@@ -7,6 +7,14 @@ import Foundation
 /// GET preflight with redirect follow-up; returns final response URL when 2xx.
 final class RemoteEntryProbe {
 
+    struct Result {
+        let success: Bool
+        let finalURL: URL?
+        /// Last HTTP status, or `nil` on transport error / cancel.
+        let statusCode: Int?
+        let errorDescription: String?
+    }
+
     private let session: URLSession
     private var task: URLSessionDataTask?
     private let timeout: TimeInterval
@@ -42,7 +50,7 @@ final class RemoteEntryProbe {
     func probe(
         entryURL: URL,
         onProgress: ((Double) -> Void)? = nil,
-        completion: @escaping (Bool, URL?) -> Void
+        completion: @escaping (Result) -> Void
     ) {
         cancel()
         onProgress?(0.2)
@@ -58,12 +66,12 @@ final class RemoteEntryProbe {
         entryURL: URL,
         remainingAttempts: Int,
         onProgress: ((Double) -> Void)?,
-        completion: @escaping (Bool, URL?) -> Void
+        completion: @escaping (Result) -> Void
     ) {
         var request = URLRequest(url: entryURL)
         request.httpMethod = "GET"
         request.timeoutInterval = timeout
-        for (field, value) in RemoteEntryProbe.customHeaders {
+        for (field, value) in Self.customHeaders {
             request.setValue(value, forHTTPHeaderField: field)
         }
         request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1", forHTTPHeaderField: "User-Agent")
@@ -86,13 +94,23 @@ final class RemoteEntryProbe {
                     )
                 } else {
                     onProgress?(1.0)
-                    completion(false, nil)
+                    completion(Result(
+                        success: false,
+                        finalURL: nil,
+                        statusCode: nil,
+                        errorDescription: error.localizedDescription
+                    ))
                 }
                 return
             }
 
             guard let http = response as? HTTPURLResponse else {
-                completion(false, nil)
+                completion(Result(
+                    success: false,
+                    finalURL: nil,
+                    statusCode: nil,
+                    errorDescription: "No HTTP response"
+                ))
                 return
             }
 
@@ -102,7 +120,12 @@ final class RemoteEntryProbe {
             if isOK {
                 let finalURL = http.url ?? entryURL
                 onProgress?(1.0)
-                completion(true, finalURL)
+                completion(Result(
+                    success: true,
+                    finalURL: finalURL,
+                    statusCode: http.statusCode,
+                    errorDescription: nil
+                ))
             } else if remainingAttempts > 1 {
                 self.attempt(
                     entryURL: entryURL,
@@ -112,7 +135,12 @@ final class RemoteEntryProbe {
                 )
             } else {
                 onProgress?(1.0)
-                completion(false, nil)
+                completion(Result(
+                    success: false,
+                    finalURL: http.url ?? entryURL,
+                    statusCode: http.statusCode,
+                    errorDescription: nil
+                ))
             }
         }
         task?.resume()

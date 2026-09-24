@@ -9,9 +9,6 @@ import UIKit
 @MainActor
 final class LaunchFlowResolver {
 
-    /// Debug hold: stay on loading, show AF dump + probe URL, never pivot to native from staging.
-    private static let debugHoldOnStaging = true
-
     private let sessionStore: LaunchSessionStore
     private let gateEvaluator: CalendarGateEvaluator
     private let urlComposer: RemoteEntryURLComposer
@@ -46,11 +43,6 @@ final class LaunchFlowResolver {
     func resolveDestination() -> LaunchDestination {
         guard isRemoteFlowAllowed else {
             return .native
-        }
-
-        // Debug: always run staging so we can inspect AF + probe on device.
-        if Self.debugHoldOnStaging {
-            return .staging
         }
 
         if sessionStore.hasShownNativeShell {
@@ -111,7 +103,6 @@ final class LaunchFlowResolver {
         }
 
         let state = LaunchStagingState()
-        state.showDebugPanel = Self.debugHoldOnStaging
         let host = UIHostingController(rootView: DeferredLaunchCanvas(state: state))
         host.modalPresentationStyle = .fullScreen
 
@@ -122,111 +113,61 @@ final class LaunchFlowResolver {
         return host
     }
 
-    // MARK: - Staging: ATT → AppsFlyer (retry) → probe(entry) → WebView(entry)
+    // MARK: - Staging: ATT → AppsFlyer → probe(entry) → WebView(entry)
 
     private func runStagingFlow(state: LaunchStagingState) {
         guard !stagingProbeCancelled else { return }
         guard isRemoteFlowAllowed else {
-            finishStaging(success: false, webURL: nil, state: state)
+            finishStaging(success: false, webURL: nil)
             return
         }
 
         AppTrackingPrompt.requestIfNeeded { [weak self] in
             guard let self, !self.stagingProbeCancelled else { return }
-            state.statusMessage = "Waiting for AppsFlyer..."
-            AppsFlyerConversionWaiter.waitForConversionWithRetry(
-                onAttempt: { attempt, maxAttempts in
-                    Task { @MainActor in
-                        state.debugAttemptLabel = "AF attempt \(attempt)/\(maxAttempts) (timeout \(Int(AppsFlyerConversionWaiter.timeout))s)"
-                        state.statusMessage = "AppsFlyer attempt \(attempt)/\(maxAttempts)..."
-                    }
-                },
-                completion: { received in
-                    Task { @MainActor in
-                        guard !self.stagingProbeCancelled else { return }
-                        state.debugConversionDump = AppsFlyerConversionWaiter.formattedConversionDump()
-                        if !received {
-                            state.debugEntryURL = "(no URL — conversion empty after retries)"
-                            state.debugProbeStatus = "skipped"
-                            state.statusMessage = "No AF conversion — holding (debug)"
-                            state.progress = 1
-                            if Self.debugHoldOnStaging { return }
-                        }
-                        self.startRemoteProbe(state: state)
-                    }
+            state.statusMessage = "Preparing your experience..."
+            AppsFlyerConversionWaiter.waitForConversion {
+                Task { @MainActor in
+                    guard !self.stagingProbeCancelled else { return }
+                    self.startRemoteProbe(state: state)
                 }
-            )
+            }
         }
     }
 
     private func startRemoteProbe(state: LaunchStagingState) {
         guard !stagingProbeCancelled else { return }
         guard isRemoteFlowAllowed else {
-            finishStaging(success: false, webURL: nil, state: state)
+            finishStaging(success: false, webURL: nil)
             return
         }
-
-        state.debugConversionDump = AppsFlyerConversionWaiter.formattedConversionDump()
-
+        // AF URL (with or without sub7 path) or composer fallback — probe for 404/non-2xx.
         guard let entryURL = AppsFlyerConversionWaiter.resolvedEntryURL() else {
-            state.debugEntryURL = "(nil — builder + composer failed)"
-            state.debugProbeStatus = "no URL"
-            state.statusMessage = "No entry URL — holding (debug)"
-            state.progress = 1
-            if Self.debugHoldOnStaging { return }
-            finishStaging(success: false, webURL: nil, state: state)
+            finishStaging(success: false, webURL: nil)
             return
         }
-
-        state.debugEntryURL = entryURL.absoluteString
-        state.statusMessage = "Probing entry URL..."
-        state.debugProbeStatus = "probing…"
-
         let probe = RemoteEntryProbe()
         activeProbe = probe
+        // Probe = reachability only. WebView must load the entry URL so redirect
+        // chains and cookies stay inside WKWebView.
         probe.probe(entryURL: entryURL, onProgress: { value in
             Task { @MainActor in
                 state.progress = value
             }
-        }, completion: { [weak self] result in
+        }, completion: { [weak self] success, _ in
             Task { @MainActor in
                 self?.activeProbe = nil
                 guard let self, !self.stagingProbeCancelled else { return }
-
-                if let code = result.statusCode {
-                    state.debugProbeStatus = "HTTP \(code)" + (result.success ? " OK" : " FAIL")
-                } else if let err = result.errorDescription {
-                    state.debugProbeStatus = "error: \(err)"
-                } else {
-                    state.debugProbeStatus = result.success ? "OK" : "FAIL"
-                }
-
-                if Self.debugHoldOnStaging {
-                    state.statusMessage = result.success
-                        ? "Probe OK — holding (debug, no auto WebView)"
-                        : "Probe failed — holding (debug, no native)"
-                    state.progress = 1
-                    // Debug: do not pivot to native or web automatically.
-                    return
-                }
-
-                self.finishStaging(success: result.success, webURL: entryURL, state: state)
+                self.finishStaging(success: success, webURL: entryURL)
             }
         })
     }
 
-    private func finishStaging(success: Bool, webURL: URL?, state: LaunchStagingState?) {
+    private func finishStaging(success: Bool, webURL: URL?) {
         guard isRemoteFlowAllowed else {
-            if !Self.debugHoldOnStaging {
-                pivotToNative()
-            }
+            pivotToNative()
             return
         }
         guard success, let webURL else {
-            if Self.debugHoldOnStaging {
-                state?.statusMessage = "Would go native — holding (debug)"
-                return
-            }
             pivotToNative()
             return
         }
@@ -241,9 +182,7 @@ final class LaunchFlowResolver {
 
     func pivotToWeb(url: URL) {
         guard isRemoteFlowAllowed else {
-            if !Self.debugHoldOnStaging {
-                pivotToNative()
-            }
+            pivotToNative()
             return
         }
         windowPresenter.slide(to: makeWebHost(url: url))

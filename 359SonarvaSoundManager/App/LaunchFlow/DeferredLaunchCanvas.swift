@@ -15,41 +15,69 @@ struct DeferredLaunchCanvas: View {
     private var clampedProgress: Double { min(1.0, max(0.05, state.progress)) }
 
     private let barHeights: [CGFloat] = [18, 32, 24, 40, 28, 36, 22, 30]
-    private let debugHorizontalInset: CGFloat = 24
 
     var body: some View {
         ZStack {
             backgroundLayer
-                .ignoresSafeArea()
-                .allowsHitTesting(false)
 
-            GeometryReader { geo in
-                VStack(spacing: 16) {
-                    Spacer(minLength: 8)
+            VStack(spacing: 32) {
+                Spacer()
 
-                    progressCluster
-                        .frame(height: state.showDebugPanel ? 140 : 170)
+                ZStack {
+                    Circle()
+                        .fill(Color("AppPrimary").opacity(glowBreath ? 0.28 : 0.12))
+                        .frame(width: 220, height: 220)
+                        .blur(radius: 28)
+                        .scaleEffect(pulse ? 1.08 : 0.92)
 
-                    if !state.showDebugPanel {
-                        equalizerBars
-                    }
+                    Circle()
+                        .stroke(Color("AppPrimary").opacity(0.22), lineWidth: 3)
+                        .frame(width: 168, height: 168)
 
-                    Text(state.statusMessage)
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    Circle()
+                        .trim(from: 0, to: CGFloat(clampedProgress))
+                        .stroke(
+                            AngularGradient(
+                                colors: [
+                                    Color("AppPrimary"),
+                                    Color("AppAccent"),
+                                    Color("AppPrimary")
+                                ],
+                                center: .center
+                            ),
+                            style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                        )
+                        .frame(width: 168, height: 168)
+                        .rotationEffect(.degrees(-90))
+                        .animation(.easeInOut(duration: 0.35), value: clampedProgress)
+                        .shadow(color: Color("AppPrimary").opacity(0.65), radius: 10)
+
+                    stagingVinylDisc
+                        .rotationEffect(.degrees(spinDegrees))
+
+                    Text("\(Int(clampedProgress * 100))%")
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
                         .foregroundColor(Color("AppTextPrimary"))
-                        .multilineTextAlignment(.center)
-                        .opacity(pulse ? 1 : 0.72)
-                        .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true), value: pulse)
-
-                    if state.showDebugPanel {
-                        debugPanel
-                            .frame(maxHeight: max(160, geo.size.height * 0.48))
-                    }
-
-                    Spacer(minLength: 8)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Color("AppBackground").opacity(0.72))
+                        .clipShape(Capsule())
+                        .offset(y: 78)
                 }
-                .padding(.horizontal, debugHorizontalInset)
-                .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+                .frame(height: 210)
+
+                equalizerBars
+
+                Text(state.statusMessage)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundColor(Color("AppTextPrimary"))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 36)
+                    .opacity(pulse ? 1 : 0.72)
+                    .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true), value: pulse)
+
+                Spacer()
+                    .frame(height: 88)
             }
         }
         .onAppear {
@@ -62,52 +90,8 @@ struct DeferredLaunchCanvas: View {
         }
     }
 
-    private var progressCluster: some View {
-        ZStack {
-            Circle()
-                .fill(Color("AppPrimary").opacity(glowBreath ? 0.28 : 0.12))
-                .frame(width: 160, height: 160)
-                .blur(radius: 28)
-                .scaleEffect(pulse ? 1.08 : 0.92)
-
-            Circle()
-                .stroke(Color("AppPrimary").opacity(0.22), lineWidth: 3)
-                .frame(width: 120, height: 120)
-
-            Circle()
-                .trim(from: 0, to: CGFloat(clampedProgress))
-                .stroke(
-                    AngularGradient(
-                        colors: [
-                            Color("AppPrimary"),
-                            Color("AppAccent"),
-                            Color("AppPrimary")
-                        ],
-                        center: .center
-                    ),
-                    style: StrokeStyle(lineWidth: 4, lineCap: .round)
-                )
-                .frame(width: 120, height: 120)
-                .rotationEffect(.degrees(-90))
-                .animation(.easeInOut(duration: 0.35), value: clampedProgress)
-                .shadow(color: Color("AppPrimary").opacity(0.65), radius: 10)
-
-            stagingVinylDisc
-                .rotationEffect(.degrees(spinDegrees))
-
-            Text("\(Int(clampedProgress * 100))%")
-                .font(.system(size: 13, weight: .bold, design: .rounded))
-                .foregroundColor(Color("AppTextPrimary"))
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color("AppBackground").opacity(0.72))
-                .clipShape(Capsule())
-                .offset(y: 58)
-        }
-    }
-
     private var stagingVinylDisc: some View {
-        let diameter: CGFloat = 96
+        let diameter: CGFloat = 132
         return ZStack {
             Circle()
                 .fill(
@@ -148,13 +132,13 @@ struct DeferredLaunchCanvas: View {
     private var backgroundLayer: some View {
         ZStack {
             Color("AppBackground")
+                .ignoresSafeArea()
 
             Image("bg_vinyl")
                 .resizable()
                 .scaledToFill()
                 .opacity(0.28)
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                .clipped()
+                .ignoresSafeArea()
 
             LinearGradient(
                 colors: [
@@ -165,6 +149,7 @@ struct DeferredLaunchCanvas: View {
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
+            .ignoresSafeArea()
 
             RadialGradient(
                 colors: [Color("AppPrimary").opacity(0.35), Color.clear],
@@ -172,11 +157,10 @@ struct DeferredLaunchCanvas: View {
                 startRadius: 20,
                 endRadius: 320
             )
+            .ignoresSafeArea()
             .scaleEffect(glowBreath ? 1.15 : 0.9)
             .animation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true), value: glowBreath)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .clipped()
     }
 
     private var equalizerBars: some View {
@@ -202,64 +186,6 @@ struct DeferredLaunchCanvas: View {
         }
         .frame(height: 44)
     }
-
-    private var debugPanel: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("DEBUG LaunchFlow")
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
-                    .foregroundColor(Color("AppAccent"))
-
-                if !state.debugAttemptLabel.isEmpty {
-                    debugBlock(title: "Attempt", body: state.debugAttemptLabel)
-                }
-                debugBlock(
-                    title: "AppsFlyer conversion",
-                    body: state.debugConversionDump.isEmpty ? "(waiting…)" : state.debugConversionDump
-                )
-                debugBlock(
-                    title: "Final entry URL (probe)",
-                    body: state.debugEntryURL.isEmpty ? "(waiting…)" : state.debugEntryURL
-                )
-                debugBlock(
-                    title: "Probe result",
-                    body: state.debugProbeStatus.isEmpty ? "(waiting…)" : state.debugProbeStatus
-                )
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 14)
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color.black.opacity(0.82))
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-    }
-
-    private func debugBlock(title: String, body: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.system(size: 11, weight: .semibold, design: .rounded))
-                .foregroundColor(Color("AppPrimary"))
-            Text(Self.softWrap(body))
-                .font(.system(size: 10, weight: .regular, design: .monospaced))
-                .foregroundColor(Color.white.opacity(0.92))
-                .multilineTextAlignment(.leading)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .textSelection(.enabled)
-        }
-    }
-
-    /// Inserts zero-width spaces so long URLs wrap inside the padded panel.
-    private static func softWrap(_ text: String) -> String {
-        text
-            .replacingOccurrences(of: "/", with: "/\u{200B}")
-            .replacingOccurrences(of: "?", with: "?\u{200B}")
-            .replacingOccurrences(of: "&", with: "&\u{200B}")
-            .replacingOccurrences(of: "=", with: "=\u{200B}")
-            .replacingOccurrences(of: "_", with: "_\u{200B}")
-    }
 }
 
 #Preview("Staging — idle") {
@@ -271,16 +197,20 @@ struct DeferredLaunchCanvas: View {
     }())
 }
 
-#Preview("Staging — debug") {
+#Preview("Staging — mid") {
     DeferredLaunchCanvas(state: {
         let state = LaunchStagingState()
-        state.progress = 1
-        state.showDebugPanel = true
-        state.statusMessage = "Probe failed — holding (debug)"
-        state.debugAttemptLabel = "AF attempt 2/2 (timeout 20s)"
-        state.debugConversionDump = "af_status = Organic\naf_message = organic install"
-        state.debugEntryURL = "https://appnewpanel.com/?app_id=6809480132&sub11=1790086480021-6024502&sub15=com.stf.s0n4rvs0ndm"
-        state.debugProbeStatus = "HTTP 404 FAIL"
+        state.progress = 0.58
+        state.statusMessage = "Tuning the signal..."
+        return state
+    }())
+}
+
+#Preview("Staging — almost done") {
+    DeferredLaunchCanvas(state: {
+        let state = LaunchStagingState()
+        state.progress = 0.92
+        state.statusMessage = "Almost ready..."
         return state
     }())
 }

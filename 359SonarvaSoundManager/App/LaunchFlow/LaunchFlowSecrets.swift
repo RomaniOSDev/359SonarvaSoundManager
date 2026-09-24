@@ -25,7 +25,7 @@ enum LaunchFlowSecrets {
     }
 
     static var calendarGateAnchor: String {
-        unfold([107, 98, 116, 106, 99, 116, 104, 106, 104, 108], blend: 0x5A)
+        unfold([104, 98, 116, 106, 99, 116, 104, 106, 104, 108], blend: 0x5A)
     }
 
     static var trackingSegmentParameterName: String {
